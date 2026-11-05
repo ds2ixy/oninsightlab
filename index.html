@@ -538,6 +538,29 @@ input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;colo
 .my-acts{display:flex;gap:6px;flex-wrap:wrap}
 .my-edit{display:grid;gap:10px}
 .qa-done-acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+
+/* ===== 문의 목록 ===== */
+.ql-wrap{overflow-x:auto}
+.ql{width:100%;border-collapse:collapse;font-size:14px}
+.ql th{font-size:12px;font-weight:600;color:var(--muted);text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface-3);white-space:nowrap}
+.ql td{padding:12px 14px;border-bottom:1px solid var(--line-soft);color:var(--text-2);vertical-align:middle}
+.ql tbody tr{cursor:pointer}
+.ql tbody tr:hover td{background:var(--surface-3)}
+.ql tbody tr:last-child td{border-bottom:0}
+.ql .ql-no,.ql .ql-date{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}
+.ql .ql-no{width:4em}
+.ql .ql-type,.ql .ql-who,.ql .ql-st{white-space:nowrap}
+.ql .ql-title{color:var(--text);font-weight:500}
+.ql .ql-title svg{width:13px;height:13px;margin-right:6px;vertical-align:-1px;stroke:var(--muted);fill:none;stroke-width:2}
+.ql .ql-empty{text-align:center;color:var(--muted);cursor:default;padding:28px 14px}
+.ql tbody tr.empty-row{cursor:default}
+.ql-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid var(--line-soft)}
+.ql-msg{margin:0;font-size:12.5px;color:var(--muted)}
+.ql-pager{display:flex;gap:4px;flex-wrap:wrap}
+.ql-pager button{min-width:32px;height:32px;border:1px solid var(--line);background:var(--surface);color:var(--text-2);border-radius:8px;font:500 13px var(--font-kr);cursor:pointer}
+.ql-pager button[aria-current="page"]{background:var(--accent-fill);border-color:var(--accent-fill);color:#fff}
+@media(max-width:640px){.ql .ql-no,.ql .ql-who{display:none}.ql td,.ql th{padding:10px 8px}}
+.my-ans .notice{margin:0;color:var(--text)}
 </style>
 </head>
 <body>
@@ -836,6 +859,20 @@ input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;colo
       <div id="form-embed"></div>
     </div>
 
+    <div id="list-wrap" hidden>
+    <h3 class="anchor" id="inquiry-list" style="font-size:19px;margin:40px 0 14px">문의 목록</h3>
+    <div class="panel">
+      <div class="panel-head"><h3>전체 문의</h3><div class="spacer"></div><span id="ql-count" class="label"></span></div>
+      <div class="ql-wrap">
+        <table class="ql">
+          <thead><tr><th class="ql-no">번호</th><th class="ql-type">유형</th><th>제목</th><th class="ql-who">작성자</th><th class="ql-date">접수일</th><th class="ql-st">상태</th></tr></thead>
+          <tbody id="ql-body"><tr><td colspan="6" class="ql-empty">문의 목록을 불러오는 중…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="ql-foot"><p id="ql-msg" class="ql-msg">제목을 누르면 본인 확인 후 내용을 볼 수 있습니다.</p><div class="ql-pager" id="ql-pager"></div></div>
+    </div>
+    </div>
+
     <div id="my-wrap" hidden>
     <h3 class="anchor" id="my-inquiry" style="font-size:19px;margin:40px 0 6px">내 문의 확인 · 수정</h3>
     <p class="my-lead">문의할 때 입력한 <b>성함</b>과 <b>휴대폰 번호</b>로 내가 남긴 문의와 답변을 확인하고, 답변 전이면 내용을 고칠 수 있습니다.</p>
@@ -1084,6 +1121,9 @@ var CONTACT = {
   formHeight: 1900,             // (구글폼을 그대로 넣을 때만 사용) 양식 높이(px)
 
   // '내 문의 확인·수정' 웹앱 주소 (Apps Script 웹 앱 URL, …/exec). 비워 두면 해당 칸이 숨겨집니다.
+  // 홈페이지 '내 문의 확인'에서 답변 자리에 보여 줄 문구 (비워 두면 실제 답변을 그대로 표시)
+  answerNotice: "자세한 내용은 메일로 보내드렸습니다.",
+
   lookupUrl: "https://script.google.com/macros/s/AKfycbwds1M0y2dpuI1bToFobPUh9rACSZk_nNNteqEt1kKJQhk7vlFUyE70LBSaY-dnLTaR/exec",
 
   // 홈페이지 디자인 양식 → 구글폼으로 전송할 때 쓰는 문항 번호(entry ID).
@@ -1254,6 +1294,7 @@ var RESOURCES = [
       fetch(action, {method:'POST', mode:'no-cors', body:data}).then(function(){
         form.reset(); form.hidden=true; done.hidden=false; say('');
         if(window.gtag) window.gtag('event','generate_lead',{form:'inquiry'});
+        if(window.__qlReload) setTimeout(window.__qlReload, 5000);
       })['catch'](function(){
         say('전송하지 못했습니다. 잠시 후 다시 시도하시거나 아래 이메일로 문의해 주세요.', true);
       }).then(function(){ btn.disabled=false; });
@@ -1307,7 +1348,7 @@ var RESOURCES = [
       w.appendChild(el('p','my-body',it.body));
       if(it.answer){
         var a=el('div','my-ans'); a.appendChild(el('span','label','Answer · 담당자 답변'));
-        a.appendChild(el('p',null,it.answer));
+        a.appendChild(el('p', CONTACT.answerNotice ? 'notice' : null, CONTACT.answerNotice || it.answer));
         if(it.answeredAt) a.appendChild(el('p','my-meta',d(it.answeredAt)));
         w.appendChild(a);
       } else {
@@ -1334,7 +1375,7 @@ var RESOURCES = [
         call({action:'update', id:it.id, ts:it.ts, name:who.name, phone:who.phone, type:sel.value, title:ti.value.trim(), body:bo.value.trim()})
           .then(function(r){
             if(!r.ok){ say(ERR[r.error]||'저장하지 못했습니다.', true); ok.disabled=false; return; }
-            say('수정했습니다.'); lookup();
+            say('수정했습니다.'); lookup(); if(window.__qlReload) setTimeout(window.__qlReload, 1500);
           })['catch'](function(){ say('저장하지 못했습니다. 잠시 후 다시 시도해 주세요.', true); ok.disabled=false; });
       };
       acts.appendChild(ok); acts.appendChild(no); box.appendChild(acts); w.appendChild(box);
@@ -1355,6 +1396,41 @@ var RESOURCES = [
       if(!n || p.replace(/\D/g,'').length<10){ say(ERR.need_name_phone, true); return; }
       who={name:n, phone:p}; lookup();
     });
+
+    /* ---------- 문의 목록 ---------- */
+    (function(){
+      var wrap=$('list-wrap'), body=$('ql-body'), pager=$('ql-pager'), all=[], page=1, PER=10;
+      wrap.hidden=false;
+      var LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+      function row(cells, cls){ var tr=el('tr', cls||null); cells.forEach(function(c){ var td=el('td', c[1]||null); if(c[2]) td.innerHTML=c[2]; else td.textContent=c[0]; tr.appendChild(td); }); return tr; }
+      function draw(){
+        body.textContent=''; pager.textContent='';
+        $('ql-count').textContent = all.length ? all.length+'건' : '';
+        if(!all.length){ var tr=el('tr','empty-row'); var td=el('td','ql-empty','아직 등록된 문의가 없습니다.'); td.colSpan=6; tr.appendChild(td); body.appendChild(tr); return; }
+        var pages=Math.ceil(all.length/PER); if(page>pages) page=pages;
+        all.slice((page-1)*PER, page*PER).forEach(function(it){
+          var tr=el('tr');
+          tr.appendChild(el('td','ql-no',String(it.no)));
+          tr.appendChild(el('td','ql-type',it.type||'기타'));
+          var t=el('td','ql-title'); t.innerHTML=LOCK; t.appendChild(document.createTextNode(it.title||'(제목 없음)')); tr.appendChild(t);
+          tr.appendChild(el('td','ql-who',it.who||''));
+          tr.appendChild(el('td','ql-date',d(it.ts)));
+          var st=el('td','ql-st'); st.appendChild(el('span', it.done?'my-pill ok':'my-pill wait', it.done?'답변완료':'접수')); tr.appendChild(st);
+          tr.tabIndex=0;
+          var go=function(){ $('ql-msg').textContent='본인 확인: 아래에 문의할 때 입력한 성함과 휴대폰 번호를 넣고 조회하세요.';
+            $('my-inquiry').scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(function(){ $('my-name').focus({preventScroll:true}); },500); };
+          tr.addEventListener('click', go); tr.addEventListener('keydown', function(e){ if(e.key==='Enter') go(); });
+          body.appendChild(tr);
+        });
+        if(pages>1) for(var i=1;i<=pages;i++){ (function(n){ var b=el('button',null,String(n)); b.type='button'; if(n===page) b.setAttribute('aria-current','page'); b.onclick=function(){ page=n; draw(); }; pager.appendChild(b); })(i); }
+      }
+      window.__qlReload=function(){
+        call({action:'list'}).then(function(r){ if(r && r.ok){ all=r.items||[]; draw(); } else throw 0; })
+          ['catch'](function(){ body.textContent=''; var tr=el('tr','empty-row'); var td=el('td','ql-empty','문의 목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.'); td.colSpan=6; tr.appendChild(td); body.appendChild(tr); });
+      };
+      window.__qlReload();
+    })();
+
     /* 문의 등록 직후 '내 문의 확인하기' */
     var mine=$('qa-mine');
     if(mine){
