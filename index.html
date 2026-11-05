@@ -1180,6 +1180,10 @@ var RESOURCES = [
   var resList=document.getElementById('res-list');
   var resFilter='all', resQuery='';
 
+  /* 내려받은 index.html을 컴퓨터에서 직접 열었을 때는 자료 파일이 옆에 없으므로 사이트 주소로 연결 */
+  var SITE_BASE = 'https://raw.githack.com/ds2ixy/oninsightlab/main/';
+  function siteUrl(path){ return (location.protocol === 'file:' && !/^https?:/.test(path)) ? SITE_BASE + path : path; }
+
   function renderResources(){
     var items=RESOURCES.filter(function(r){
       if(resFilter!=='all' && r.category!==resFilter) return false;
@@ -1215,15 +1219,15 @@ var RESOURCES = [
       var acts=el('div','acts');
       if(r.ebook){
         var eb=el('a','btn btn-sm btn-primary','이북으로 보기');
-        eb.href=r.ebook; eb.target='_blank'; eb.rel='noopener';
+        eb.href=siteUrl(r.ebook); eb.target='_blank'; eb.rel='noopener';
         acts.appendChild(eb);
       }
       if(r.file){
         var open=el('a','btn btn-sm','열기');
-        open.href=r.file; open.target='_blank'; open.rel='noopener';
+        open.href=siteUrl(r.file); open.target='_blank'; open.rel='noopener';
         acts.appendChild(open);
         var dl=el('a', r.ebook ? 'btn btn-sm' : 'btn btn-sm btn-primary','다운로드');
-        dl.href=r.file; dl.setAttribute('download','');
+        dl.href=siteUrl(r.file); dl.setAttribute('download','');
         acts.appendChild(dl);
       } else {
         acts.appendChild(el('span','pill pill-wait','등록 예정'));
