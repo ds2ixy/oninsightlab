@@ -100,34 +100,35 @@ formHeight: 1200
 
 ## 5. 배포 — 셋 중 편한 방법으로
 
-### ★★ GitHub 연동 배포 (권장 — 저장소: github.com/ds2ixy/oninsightlab)
+### ★ GitHub Pages (현재 방식 — 저장소: github.com/ds2ixy/oninsightlab, 도메인: oninsightlab.com)
 
-GitHub에 파일을 올리면 Cloudflare가 자동으로 사이트를 갱신합니다. 한 번만 연결해 두면 이후로는 GitHub만 고치면 됩니다.
+GitHub 하나로 호스팅합니다. 파일을 고쳐 Commit 하면 1~2분 뒤 사이트에 자동 반영됩니다. Cloudflare는 쓰지 않습니다.
 
-**① 저장소에 새 파일 올리기** (GitHub 웹에서)
-1. github.com/ds2ixy/oninsightlab 접속 → **Add file → Upload files**
-2. 새 `index.html`을 끌어다 놓기 (같은 이름이면 덮어씀) → 아래 **Commit changes**
-3. `board.html`, `files/` 폴더는 그대로 둡니다
+**① GitHub Pages 켜기** (처음 한 번)
+1. 저장소 → **Settings** → 왼쪽 **Pages**
+2. Source: **Deploy from a branch** / Branch: **main** / 폴더: **/ (root)** → **Save**
+3. **Custom domain**에 `oninsightlab.com` 입력 → **Save** (저장소에 `CNAME` 파일이 자동으로 생김 — 지우지 마세요)
 
-**② Cloudflare와 연결** (처음 한 번)
-1. Cloudflare 대시보드 → **Workers & Pages** → **Create application** → **Pages** 탭 → **Connect to Git**
-2. **GitHub** 선택 → 권한 허용(ds2ixy 계정, oninsightlab 저장소만 골라도 됨)
-3. 저장소 `ds2ixy/oninsightlab` 선택 → **Begin setup**
-4. 설정값
-   - Project name: `oninsightlab`
-   - Production branch: `main`
-   - Framework preset: **None**
-   - Build command: **비워 둠**
-   - Build output directory: **`/`** (비워 두거나 슬래시)
-5. **Save and Deploy** → 1분 안에 `https://oninsightlab.pages.dev` 생성
-6. 이어서 아래 '도메인 연결'대로 oninsightlab.com 연결
+**② 도메인 DNS 설정** — 도메인은 Google Workspace에서 구매 → DNS는 **Squarespace Domains**에서 관리
+1. Google 관리 콘솔(admin.google.com) → **계정 → 도메인 → 도메인 관리** → oninsightlab.com 의 **세부정보 보기/DNS 관리** → Squarespace Domains로 이동 (같은 Google 계정으로 로그인)
+   - 바로 가려면 domains.squarespace.com 에서 Google 계정으로 로그인
+2. 도메인 선택 → **DNS** → **Custom records** → **ADD RECORD** 로 아래 5개 추가
 
-**이후 수정** — GitHub에서 파일을 고치거나 올리고 Commit 하면 Cloudflare가 1~2분 안에 자동 반영합니다.
+| 종류 | Host | 값 |
+|---|---|---|
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | ds2ixy.github.io |
 
-> 주의: 끌어다 놓기(Direct Upload)로 `oninsightlab` 프로젝트를 이미 만들었다면, 그 프로젝트는 GitHub로 바꿀 수 없습니다. 그 프로젝트를 삭제(Settings → Delete project)한 뒤 위 절차로 새로 만드세요.
-> 저장소가 공개(public)라서 README.md·board.html도 누구나 볼 수 있습니다.
+3. **절대 지우면 안 되는 것**: `Google Workspace` 묶음(MX 레코드), SPF(`v=spf1 include:_spf.google.com`) TXT, DKIM(`google._domainkey`) TXT, `google-site-verification` TXT — 지우면 contact@oninsightlab.com 메일이 끊깁니다.
+4. `@` 또는 `www`에 Squarespace 기본값(**Squarespace Defaults**) A/CNAME 레코드가 있으면 **그것만** 삭제 (위 레코드와 충돌)
+5. 반영까지 최대 24시간 → GitHub Pages 화면에서 초록색 확인 표시가 뜨면 **Enforce HTTPS** 체크
 
-### ★ Cloudflare Pages — 끌어다 놓기 방식 (GitHub 없이)
+**이후 수정** — GitHub에서 `index.html` 수정 또는 **Add file → Upload files** 로 덮어쓰기 → **Commit changes**.
+
+### (참고) Cloudflare Pages — 끌어다 놓기 방식
 
 올릴 것은 `index.html`과 `files` 폴더 **두 가지뿐**입니다. 이 README는 올리지 마세요(누구나 볼 수 있게 됩니다).
 Claude가 만들어 준 `oninsightlab_cloudflare.zip`을 그대로 올려도 됩니다.
@@ -142,7 +143,7 @@ Claude가 만들어 준 `oninsightlab_cloudflare.zip`을 그대로 올려도 됩
 **수정본을 다시 올릴 때**
 - 같은 프로젝트 → **Create a new deployment** → **Production** 선택 → 새 zip 끌어다 놓기
 
-**도메인 연결 (oninsightlab.com)**
+**(Cloudflare를 쓸 경우) 도메인 연결**
 1. 도메인을 Cloudflare에 등록: 대시보드 첫 화면 **Add a domain**(또는 Add site) → `oninsightlab.com` → Free 플랜
    - 가비아·후이즈 등에서 산 도메인이면, 그 업체 관리 화면에서 **네임서버를 Cloudflare가 알려준 2개로 변경** (반영까지 수 분~최대 24시간)
    - Cloudflare에서 직접 산 도메인이면 이 단계는 이미 끝난 상태
