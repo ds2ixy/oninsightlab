@@ -515,6 +515,29 @@ input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;colo
 .qa-done b{font-size:17px;color:var(--text)}
 .qa-done span{color:var(--muted);font-size:14px}
 .qa-done .btn{margin-top:6px}
+
+/* ===== 내 문의 확인 ===== */
+.my-lead{margin:0 0 14px;color:var(--muted);font-size:14px}
+.my-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end;border-bottom:1px solid var(--line-soft)}
+.my-go{justify-content:flex-end}
+@media(max-width:640px){.my-form{grid-template-columns:1fr}.my-go .btn{width:100%}}
+.my-msg{padding:10px 20px 0}
+#my-list{display:grid}
+.my-item{padding:18px 20px;border-top:1px solid var(--line-soft);display:grid;gap:8px}
+.my-item:first-child{border-top:0}
+.my-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.my-top h4{margin:0;font-size:15.5px;color:var(--text);flex:1 1 auto;min-width:0}
+.my-pill{font-size:11.5px;font-weight:600;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--text-2);background:var(--surface)}
+.my-pill.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.my-pill.wait{background:var(--wait-soft);color:var(--wait);border-color:transparent}
+.my-meta{margin:0;font-size:12.5px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.my-body{margin:0;white-space:pre-wrap;color:var(--text-2);font-size:14.5px;line-height:1.7}
+.my-ans{background:var(--accent-soft);border-radius:10px;padding:12px 14px}
+.my-ans .label{display:block;color:var(--accent);margin-bottom:6px}
+.my-ans p{margin:0;white-space:pre-wrap;font-size:14.5px;color:var(--text)}
+.my-acts{display:flex;gap:6px;flex-wrap:wrap}
+.my-edit{display:grid;gap:10px}
+.qa-done-acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
 </style>
 </head>
 <body>
@@ -771,38 +794,9 @@ input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;colo
   <div class="wrap sec-in">
     <p class="eyebrow">Contact</p>
     <h2 class="sec-title">문의하기</h2>
-    <p class="sec-lead">사업 제휴, 행사·포럼, 컨설팅, 교육·연수에 대한 문의를 받고 있습니다. 먼저 자주 묻는 질문에서 답을 확인해 보시고, 해결되지 않으면 아래 채널로 연락해 주세요.</p>
+    <p class="sec-lead">사업 제휴, 행사·포럼, 컨설팅, 교육·연수 문의를 받고 있습니다. 아래 양식으로 남겨 주시면 담당자가 확인한 뒤 회신드립니다.</p>
 
-    <h3 class="anchor" id="faq" style="font-size:19px;margin-bottom:14px">자주 묻는 질문</h3>
-
-    <div class="panel faq" style="margin-bottom:24px">
-      <details>
-        <summary>On Insight Lab은 어떤 조직인가요?</summary>
-        <div class="ans">현장 중심 문제 해결과 지속 가능한 성장을 이끄는 Think &amp; Do Tank입니다. 데이터로 본질을 진단하는 연구(Think)에서 멈추지 않고, 현장에서 실제로 작동하는 해법을 설계·검증하는 실행(Do)까지 함께 수행합니다.</div>
-      </details>
-      <details>
-        <summary>어떤 분야의 연구와 사업을 수행하나요?</summary>
-        <div class="ans">네 가지 전략 방향으로 활동합니다. ① 데이터 기반 정밀 통찰 — 현장 진단·환경 분석 고도화와 예측 모델 구축, ② 현장 밀착형 솔루션 설계 — 수요자 중심 프레임워크 개발과 리빙랩 기반 검증, ③ 지식 생태계 네트워크 구축 — 산·학·관·연 지식 공유 플랫폼과 다학제 전문가 협업, ④ 지속 가능한 사회적 가치 확산 — 프로젝트 품질 관리(CQI)와 자생적 문제 해결 역량 강화.</div>
-      </details>
-      <details>
-        <summary>연구 의뢰나 사업 제휴는 어떻게 진행되나요?</summary>
-        <div class="ans">아래 문의 채널로 과업의 목적, 대상 지역·기관, 희망 일정, 예산 범위를 함께 보내주시면 담당자가 확인 후 회신드립니다. 이후 사전 협의 → 과업 범위 확정 → 제안서 및 견적 → 계약 순으로 진행됩니다.</div>
-      </details>
-      <details>
-        <summary>자료실의 자료를 자유롭게 사용할 수 있나요?</summary>
-        <div class="ans">비영리 목적의 인용과 학술적 활용은 가능하며, 이때 &lsquo;출처: On Insight Lab&rsquo;과 자료명을 함께 표기해 주세요. 상업적 이용, 2차 저작물 제작, 원문 변형 후 재배포는 사전 협의가 필요합니다.</div>
-      </details>
-      <details>
-        <summary>로고(CI)를 사용하려면 어떤 규정을 지켜야 하나요?</summary>
-        <div class="ans">시그니처 사방에 최소 보호 구역 3a 이상을 확보하고, 디지털은 심볼 단독 24px·조합형 40px, 인쇄는 심볼 폭 10mm·시그니처 폭 20mm 이상으로 사용해 주세요. 전용 색상(#008CD6 / #001333 / #0D0D0D) 외의 임의 색상 변경, 비율 왜곡, 그림자·테두리 추가는 허용되지 않습니다. 사용 전 문의 채널로 승인 요청을 부탁드립니다.</div>
-      </details>
-      <details>
-        <summary>채용이나 인턴십 지원은 어떻게 하나요?</summary>
-        <div class="ans">채용은 수시로 진행하며 모집 공고는 자료실 &lsquo;사업안내&rsquo; 분류에 게시합니다. 공고와 별개로 지원을 희망하시면 이력서와 포트폴리오를 문의 채널로 보내주세요. 상시 검토 후 적합한 포지션이 열릴 때 개별 연락드립니다.</div>
-      </details>
-    </div>
-
-    <h3 class="anchor" id="inquiry" style="font-size:19px;margin:40px 0 14px">온라인 문의</h3>
+    <h3 class="anchor" id="inquiry" style="font-size:19px;margin:0 0 14px">온라인 문의</h3>
     <div class="panel" id="form-panel">
       <div class="panel-head">
         <h3>문의 등록</h3>
@@ -837,18 +831,52 @@ input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;colo
       <div id="qa-done" class="qa-done" hidden>
         <b>문의가 접수되었습니다</b>
         <span>담당자가 확인한 뒤 남겨 주신 연락처로 회신드리겠습니다.</span>
-        <button type="button" id="qa-again" class="btn btn-sm">다른 문의 남기기</button>
+        <div class="qa-done-acts"><button type="button" id="qa-again" class="btn btn-sm">다른 문의 남기기</button><button type="button" id="qa-mine" class="btn btn-sm btn-primary" hidden>내 문의 확인하기</button></div>
       </div>
       <div id="form-embed"></div>
     </div>
 
-    <div class="cta" id="contact-cta" style="margin-top:24px">
-      <div>
-        <span class="label">Contact</span>
-        <h3 style="font-size:20px;margin:8px 0 4px">다른 방법으로 연락하기</h3>
-        <p style="margin:0;color:var(--muted);font-size:14.5px">사업 제휴 · 행사·포럼 · 컨설팅 · 교육·연수 문의를 받고 있습니다.</p>
-      </div>
-      <div class="cta-acts" id="cta-acts"></div>
+    <div id="my-wrap" hidden>
+    <h3 class="anchor" id="my-inquiry" style="font-size:19px;margin:40px 0 6px">내 문의 확인 · 수정</h3>
+    <p class="my-lead">문의할 때 입력한 <b>성함</b>과 <b>휴대폰 번호</b>로 내가 남긴 문의와 답변을 확인하고, 답변 전이면 내용을 고칠 수 있습니다.</p>
+    <div class="panel" id="my-panel">
+      <form id="my-form" class="form-grid my-form" novalidate>
+        <div class="field"><label for="my-name">성함</label><input type="text" id="my-name" autocomplete="name" placeholder="홍길동"></div>
+        <div class="field"><label for="my-phone">휴대폰</label><input type="tel" id="my-phone" inputmode="numeric" autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></div>
+        <div class="field my-go"><button type="submit" id="my-submit" class="btn btn-primary">조회</button></div>
+      </form>
+      <p id="my-msg" class="qa-msg my-msg" role="status" aria-live="polite"></p>
+      <div id="my-list"></div>
+    </div>
+    </div>
+
+    <h3 class="anchor" id="faq" style="font-size:19px;margin:40px 0 14px">자주 묻는 질문</h3>
+
+    <div class="panel faq">
+      <details>
+        <summary>On Insight Lab은 어떤 조직인가요?</summary>
+        <div class="ans">현장 중심 문제 해결과 지속 가능한 성장을 이끄는 Think &amp; Do Tank입니다. 데이터로 본질을 진단하는 연구(Think)에서 멈추지 않고, 현장에서 실제로 작동하는 해법을 설계·검증하는 실행(Do)까지 함께 수행합니다.</div>
+      </details>
+      <details>
+        <summary>어떤 분야의 연구와 사업을 수행하나요?</summary>
+        <div class="ans">네 가지 전략 방향으로 활동합니다. ① 데이터 기반 정밀 통찰 — 현장 진단·환경 분석 고도화와 예측 모델 구축, ② 현장 밀착형 솔루션 설계 — 수요자 중심 프레임워크 개발과 리빙랩 기반 검증, ③ 지식 생태계 네트워크 구축 — 산·학·관·연 지식 공유 플랫폼과 다학제 전문가 협업, ④ 지속 가능한 사회적 가치 확산 — 프로젝트 품질 관리(CQI)와 자생적 문제 해결 역량 강화.</div>
+      </details>
+      <details>
+        <summary>연구 의뢰나 사업 제휴는 어떻게 진행되나요?</summary>
+        <div class="ans">아래 문의 채널로 과업의 목적, 대상 지역·기관, 희망 일정, 예산 범위를 함께 보내주시면 담당자가 확인 후 회신드립니다. 이후 사전 협의 → 과업 범위 확정 → 제안서 및 견적 → 계약 순으로 진행됩니다.</div>
+      </details>
+      <details>
+        <summary>자료실의 자료를 자유롭게 사용할 수 있나요?</summary>
+        <div class="ans">비영리 목적의 인용과 학술적 활용은 가능하며, 이때 &lsquo;출처: On Insight Lab&rsquo;과 자료명을 함께 표기해 주세요. 상업적 이용, 2차 저작물 제작, 원문 변형 후 재배포는 사전 협의가 필요합니다.</div>
+      </details>
+      <details>
+        <summary>로고(CI)를 사용하려면 어떤 규정을 지켜야 하나요?</summary>
+        <div class="ans">시그니처 사방에 최소 보호 구역 3a 이상을 확보하고, 디지털은 심볼 단독 24px·조합형 40px, 인쇄는 심볼 폭 10mm·시그니처 폭 20mm 이상으로 사용해 주세요. 전용 색상(#008CD6 / #001333 / #0D0D0D) 외의 임의 색상 변경, 비율 왜곡, 그림자·테두리 추가는 허용되지 않습니다. 사용 전 문의 채널로 승인 요청을 부탁드립니다.</div>
+      </details>
+      <details>
+        <summary>채용이나 인턴십 지원은 어떻게 하나요?</summary>
+        <div class="ans">채용은 수시로 진행하며 모집 공고는 자료실 &lsquo;사업안내&rsquo; 분류에 게시합니다. 공고와 별개로 지원을 희망하시면 이력서와 포트폴리오를 문의 채널로 보내주세요. 상시 검토 후 적합한 포지션이 열릴 때 개별 연락드립니다.</div>
+      </details>
     </div>
   </div>
 </section>
@@ -1055,6 +1083,9 @@ var CONTACT = {
   formUrl:    "https://docs.google.com/forms/d/e/1FAIpQLSdB5IJ6tTozZzSnC9ul-ViphGQI0Cvolp8AN02Ia5zdYtuhog/viewform?embedded=true",
   formHeight: 1900,             // (구글폼을 그대로 넣을 때만 사용) 양식 높이(px)
 
+  // '내 문의 확인·수정' 웹앱 주소 (Apps Script 웹 앱 URL, …/exec). 비워 두면 해당 칸이 숨겨집니다.
+  lookupUrl: "",
+
   // 홈페이지 디자인 양식 → 구글폼으로 전송할 때 쓰는 문항 번호(entry ID).
   // 모두 채워지면 박스형 양식이, 하나라도 비면 구글폼 화면이 그대로 표시됩니다.
   formFields: {
@@ -1236,21 +1267,108 @@ var RESOURCES = [
     });
   }
 
-  /* ---------- 문의 버튼 ---------- */
-  var acts=document.getElementById('cta-acts');
-  if(CONTACT.email){
-    var a=el('a','btn btn-primary','이메일로 문의하기');
-    a.href='mailto:'+CONTACT.email+'?subject='+encodeURIComponent('[문의] On Insight Lab');
-    acts.appendChild(a);
-  }
-  if(CONTACT.tel){
-    var t2=el('a','btn','전화 '+CONTACT.tel);
-    t2.href='tel:'+CONTACT.tel.replace(/[^0-9+]/g,'');
-    acts.appendChild(t2);
-  }
-  if(!acts.childNodes.length){
-    acts.appendChild(el('span','tbd','이메일·전화를 설정하면 여기에 버튼이 표시됩니다 (index.html 상단 CONTACT)'));
-  }
+  /* ---------- 내 문의 확인 · 수정 (Apps Script 웹앱) ---------- */
+  (function(){
+    if(!CONTACT.lookupUrl) return;
+    var $=function(id){ return document.getElementById(id); };
+    $('my-wrap').hidden=false;
+    var list=$('my-list'), msg=$('my-msg'), who=null;
+    var TYPES=['사업 제휴','행사·포럼','컨설팅','교육·연수','기타'];
+    var ERR={need_name_phone:'성함과 휴대폰 번호를 정확히 입력해 주세요.', too_many:'조회가 너무 많습니다. 10분 뒤 다시 시도해 주세요.',
+             not_found:'문의를 찾지 못했습니다. 새로 조회해 주세요.', answered:'답변이 등록된 문의는 수정할 수 없습니다.', empty:'제목과 내용을 입력해 주세요.'};
+    function say(t, err){ msg.textContent=t||''; msg.className='qa-msg my-msg'+(err?' err':''); }
+    function d(iso){ if(!iso) return ''; var x=new Date(iso); if(isNaN(x)) return ''; return x.getFullYear()+'.'+String(x.getMonth()+1).padStart(2,'0')+'.'+String(x.getDate()).padStart(2,'0'); }
+    function hy(inp){ inp.addEventListener('input', function(){
+      var v=inp.value.replace(/\D/g,'').slice(0,11);
+      inp.value = v.length<4 ? v : v.length<8 ? v.slice(0,3)+'-'+v.slice(3) : v.slice(0,3)+'-'+v.slice(3,v.length-4)+'-'+v.slice(-4); }); }
+    hy($('my-phone'));
+    function call(payload){
+      return fetch(CONTACT.lookupUrl, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)})
+        .then(function(r){ return r.json(); });
+    }
+    function render(items){
+      list.textContent='';
+      if(!items.length){ say('입력하신 성함·휴대폰으로 등록된 문의가 없습니다. 방금 등록했다면 1~2분 뒤 다시 조회해 주세요.'); return; }
+      say(items.length+'건의 문의가 있습니다.');
+      items.forEach(function(it){ list.appendChild(card(it)); });
+    }
+    function card(it){
+      var w=el('div','my-item');
+      var top=el('div','my-top');
+      top.appendChild(el('span','my-pill',it.type||'기타'));
+      top.appendChild(el('h4',null,it.title||'(제목 없음)'));
+      top.appendChild(el('span', it.answer?'my-pill ok':'my-pill wait', it.answer?'답변완료':'접수'));
+      w.appendChild(top);
+      var meta=el('p','my-meta');
+      meta.appendChild(el('span',null,'접수 '+d(it.ts)));
+      if(it.editedAt) meta.appendChild(el('span',null,'수정 '+d(it.editedAt)));
+      if(it.org) meta.appendChild(el('span',null,it.org));
+      w.appendChild(meta);
+      w.appendChild(el('p','my-body',it.body));
+      if(it.answer){
+        var a=el('div','my-ans'); a.appendChild(el('span','label','Answer · 담당자 답변'));
+        a.appendChild(el('p',null,it.answer));
+        if(it.answeredAt) a.appendChild(el('p','my-meta',d(it.answeredAt)));
+        w.appendChild(a);
+      } else {
+        var acts=el('div','my-acts'); var b=el('button','btn btn-sm','내용 수정'); b.type='button';
+        b.onclick=function(){ w.replaceWith(editor(it)); };
+        acts.appendChild(b); w.appendChild(acts);
+      }
+      return w;
+    }
+    function editor(it){
+      var w=el('div','my-item'), box=el('div','my-edit');
+      var sel=el('select'); TYPES.forEach(function(t){ var o=el('option',null,t); if(t===it.type) o.selected=true; sel.appendChild(o); });
+      var ti=el('input'); ti.type='text'; ti.value=it.title;
+      var bo=el('textarea'); bo.value=it.body; bo.rows=6;
+      [['문의 유형',sel],['제목',ti],['내용',bo]].forEach(function(p,i){
+        var f=el('div','field'); var l=el('label',null,p[0]); var id='my-ed-'+it.id+'-'+i; l.htmlFor=id; p[1].id=id; f.appendChild(l); f.appendChild(p[1]); box.appendChild(f); });
+      var acts=el('div','my-acts');
+      var ok=el('button','btn btn-sm btn-primary','저장'); ok.type='button';
+      var no=el('button','btn btn-sm','취소'); no.type='button';
+      no.onclick=function(){ w.replaceWith(card(it)); };
+      ok.onclick=function(){
+        if(!ti.value.trim()||!bo.value.trim()){ say(ERR.empty,true); return; }
+        ok.disabled=true; say('저장 중…');
+        call({action:'update', id:it.id, ts:it.ts, name:who.name, phone:who.phone, type:sel.value, title:ti.value.trim(), body:bo.value.trim()})
+          .then(function(r){
+            if(!r.ok){ say(ERR[r.error]||'저장하지 못했습니다.', true); ok.disabled=false; return; }
+            say('수정했습니다.'); lookup();
+          })['catch'](function(){ say('저장하지 못했습니다. 잠시 후 다시 시도해 주세요.', true); ok.disabled=false; });
+      };
+      acts.appendChild(ok); acts.appendChild(no); box.appendChild(acts); w.appendChild(box);
+      return w;
+    }
+    function lookup(){
+      if(!who) return;
+      var btn=$('my-submit'); btn.disabled=true; say('조회 중…');
+      call({action:'lookup', name:who.name, phone:who.phone}).then(function(r){
+        if(!r.ok){ list.textContent=''; say(ERR[r.error]||'조회하지 못했습니다.', true); return; }
+        render(r.items||[]);
+      })['catch'](function(){ say('조회하지 못했습니다. 잠시 후 다시 시도해 주세요.', true); })
+        .then(function(){ btn.disabled=false; });
+    }
+    $('my-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var n=$('my-name').value.trim(), p=$('my-phone').value.trim();
+      if(!n || p.replace(/\D/g,'').length<10){ say(ERR.need_name_phone, true); return; }
+      who={name:n, phone:p}; lookup();
+    });
+    /* 문의 등록 직후 '내 문의 확인하기' */
+    var mine=$('qa-mine');
+    if(mine){
+      mine.hidden=false;
+      var qf=$('qa-form');
+      if(qf) qf.addEventListener('submit', function(){ mine.dataset.n=$('qa-name').value.trim(); mine.dataset.p=$('qa-phone').value.trim(); }, true);
+      mine.addEventListener('click', function(){
+        $('my-name').value=mine.dataset.n||''; $('my-phone').value=mine.dataset.p||'';
+        $('my-inquiry').scrollIntoView({behavior:'smooth', block:'start'});
+        if(mine.dataset.n){ who={name:mine.dataset.n, phone:mine.dataset.p}; setTimeout(lookup, 1500); }
+      });
+    }
+  })();
+
 
   /* ---------- 푸터 연락처 ---------- */
   var rows=[['주소',CONTACT.address],['전화',CONTACT.tel],['이메일',CONTACT.email]];
@@ -1532,6 +1650,7 @@ var RESOURCES = [
       if(on) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current');
     });
     var grp=GROUP[pg];
+    if(id==='qa') id='inquiry';
     if(id && id.indexOf('biz-')===0){
       grp={'biz-research':'research','biz-project':'event','biz-consulting':'consult','biz-education':'edu'}[id]||'intro';
     }
