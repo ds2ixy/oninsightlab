@@ -1181,7 +1181,7 @@ var RESOURCES = [
   var resFilter='all', resQuery='';
 
   /* 내려받은 index.html을 컴퓨터에서 직접 열었을 때는 자료 파일이 옆에 없으므로 사이트 주소로 연결 */
-  var SITE_BASE = 'https://raw.githack.com/ds2ixy/oninsightlab/main/';
+  var SITE_BASE = 'https://oninsightlab.com/';
   function siteUrl(path){ return (location.protocol === 'file:' && !/^https?:/.test(path)) ? SITE_BASE + path : path; }
 
   function renderResources(){
