@@ -22,18 +22,18 @@ oninsightlab/
 
 ```js
 var CONTACT = {
-  email:   "contact@oninsightlab.kr",
-  tel:     "02-1234-5678",
-  address: "서울특별시 ○○구 ○○로 00, 0층",
-  hours:   "평일 09:00 – 18:00",
-  formUrl: ""                       // 구글폼 주소가 있으면 여기에
+  email:   "contact@oninsightlab.com",
+  tel:     "010-8677-2968",
+  address: "제주특별자치도 제주시 신대로 145, 1층 L-32호",
+  hours:   "평일 09:00 – 18:00",      // 현재 푸터에는 표시하지 않음
+  formUrl: ""                       // 구글폼 주소 (3번 참고)
 };
 ```
 
 - 이메일을 넣으면 Q&A 하단에 **이메일로 문의하기** 버튼이 생깁니다.
-- `formUrl`에 구글폼 주소를 넣으면 **문의 양식 작성** 버튼이 추가로 생깁니다.
-  (구글폼으로 받으면 응답이 스프레드시트에 자동으로 쌓여서 관리가 편합니다.)
+- `formUrl`은 문의 양식입니다. 설정 방법은 아래 3번에 따로 정리했습니다.
 - 빈 칸으로 두면 푸터에 "등록 예정"으로 표시됩니다.
+- `formUrl`이 비어 있으면 문의하기의 '온라인 문의' 칸은 숨겨지고, 이메일·전화 안내만 보입니다. (2026-11-05 연락처 입력 완료)
 
 ## 2. 자료실에 자료 추가하기
 
@@ -57,14 +57,102 @@ var CONTACT = {
 > 지금 등록된 브랜드 비전 체계 PDF와 CI 가이드는 예시 겸 실제 자료로 넣어두었습니다.
 > 외부 공개를 원치 않으시면 `files/`에서 파일을 지우고 `RESOURCES`의 해당 항목도 삭제하세요.
 
-## 3. FAQ 수정하기
+## 3. 문의 양식 연결하기 (구글폼)
+
+정적 사이트에는 서버가 없어서, 방문자가 쓴 글을 받아 저장하려면 외부 양식이 필요합니다. 구글폼이 가장 간단하고 무료입니다.
+
+**① 구글폼 만들기** — <https://forms.google.com> → 빈 양식. 아래 항목을 권장합니다.
+
+| 질문 | 유형 | 필수 |
+|---|---|---|
+| 문의 유형 | 객관식 (사업 제휴 / 행사·포럼 / 컨설팅 / 교육·연수 / 기타) | ○ |
+| 성함 | 단답형 | ○ |
+| 기관·소속 | 단답형 | |
+| 회신 휴대폰 (010-0000-0000) | 단답형 | ○ |
+| 회신 이메일 | 단답형 | ○ |
+| 제목 | 단답형 | ○ |
+| 문의 내용 | 장문형 | ○ |
+
+**② 알림 켜기** — 폼 상단 **응답** 탭 → 점 세 개(⋮) → "새 응답에 대한 이메일 알림 받기". 문의가 들어오면 메일이 옵니다.
+같은 **응답** 탭의 초록색 스프레드시트 아이콘을 누르면 모든 문의가 구글 시트에 자동으로 쌓입니다.
+
+**③ 주소 가져오기** — 폼 오른쪽 위 **보내기** → `< >` (HTML 삽입) 탭 → `src="..."` 안의 주소만 복사합니다.
+`https://docs.google.com/forms/d/e/1FAIpQL.../viewform?embedded=true` 형태입니다.
+
+**④ 붙여넣기** — `index.html`의 `CONTACT` 블록에 넣습니다.
+
+```js
+formUrl:    "https://docs.google.com/forms/d/e/1FAIpQL.../viewform?embedded=true",
+formHeight: 1200
+```
+
+저장하고 새로고침하면 문의하기 페이지 안에 양식이 바로 나타납니다.
+양식 아래쪽이 잘려 보이면 `formHeight` 숫자를 1400, 1600처럼 키우세요.
+
+> 접수된 문의는 담당자(구글 계정)만 봅니다. 홈페이지에는 공개되지 않습니다.
+
+## 4. FAQ 수정하기
 
 `index.html`에서 `자주 묻는 질문` 부분의 `<details>` 블록을 찾아 문구를 고치면 됩니다.
 질문은 `<summary>`, 답변은 `<div class="ans">` 안에 있습니다.
 
 ---
 
-## 4. 배포 — 셋 중 편한 방법으로
+## 5. 배포 — 셋 중 편한 방법으로
+
+### ★★ GitHub 연동 배포 (권장 — 저장소: github.com/ds2ixy/oninsightlab)
+
+GitHub에 파일을 올리면 Cloudflare가 자동으로 사이트를 갱신합니다. 한 번만 연결해 두면 이후로는 GitHub만 고치면 됩니다.
+
+**① 저장소에 새 파일 올리기** (GitHub 웹에서)
+1. github.com/ds2ixy/oninsightlab 접속 → **Add file → Upload files**
+2. 새 `index.html`을 끌어다 놓기 (같은 이름이면 덮어씀) → 아래 **Commit changes**
+3. `board.html`, `files/` 폴더는 그대로 둡니다
+
+**② Cloudflare와 연결** (처음 한 번)
+1. Cloudflare 대시보드 → **Workers & Pages** → **Create application** → **Pages** 탭 → **Connect to Git**
+2. **GitHub** 선택 → 권한 허용(ds2ixy 계정, oninsightlab 저장소만 골라도 됨)
+3. 저장소 `ds2ixy/oninsightlab` 선택 → **Begin setup**
+4. 설정값
+   - Project name: `oninsightlab`
+   - Production branch: `main`
+   - Framework preset: **None**
+   - Build command: **비워 둠**
+   - Build output directory: **`/`** (비워 두거나 슬래시)
+5. **Save and Deploy** → 1분 안에 `https://oninsightlab.pages.dev` 생성
+6. 이어서 아래 '도메인 연결'대로 oninsightlab.com 연결
+
+**이후 수정** — GitHub에서 파일을 고치거나 올리고 Commit 하면 Cloudflare가 1~2분 안에 자동 반영합니다.
+
+> 주의: 끌어다 놓기(Direct Upload)로 `oninsightlab` 프로젝트를 이미 만들었다면, 그 프로젝트는 GitHub로 바꿀 수 없습니다. 그 프로젝트를 삭제(Settings → Delete project)한 뒤 위 절차로 새로 만드세요.
+> 저장소가 공개(public)라서 README.md·board.html도 누구나 볼 수 있습니다.
+
+### ★ Cloudflare Pages — 끌어다 놓기 방식 (GitHub 없이)
+
+올릴 것은 `index.html`과 `files` 폴더 **두 가지뿐**입니다. 이 README는 올리지 마세요(누구나 볼 수 있게 됩니다).
+Claude가 만들어 준 `oninsightlab_cloudflare.zip`을 그대로 올려도 됩니다.
+
+**처음 올릴 때**
+1. <https://dash.cloudflare.com> 에 oninsightlab 계정으로 로그인
+2. 왼쪽 메뉴 **Workers & Pages** → **Create application** → **Get started** → **Drag and drop your files**
+3. 프로젝트 이름: `oninsightlab` 입력 → zip 파일(또는 index.html·files가 든 폴더)을 끌어다 놓기
+4. **Deploy site** (또는 **Save and Deploy**) → `https://oninsightlab.pages.dev` 주소가 발급됨
+   (이름이 이미 쓰이고 있으면 뒤에 임의의 글자가 붙습니다)
+
+**수정본을 다시 올릴 때**
+- 같은 프로젝트 → **Create a new deployment** → **Production** 선택 → 새 zip 끌어다 놓기
+
+**도메인 연결 (oninsightlab.com)**
+1. 도메인을 Cloudflare에 등록: 대시보드 첫 화면 **Add a domain**(또는 Add site) → `oninsightlab.com` → Free 플랜
+   - 가비아·후이즈 등에서 산 도메인이면, 그 업체 관리 화면에서 **네임서버를 Cloudflare가 알려준 2개로 변경** (반영까지 수 분~최대 24시간)
+   - Cloudflare에서 직접 산 도메인이면 이 단계는 이미 끝난 상태
+2. **Workers & Pages** → `oninsightlab` 프로젝트 → **Custom domains** → **Set up a custom domain** → `oninsightlab.com` 입력 → 활성화
+3. 같은 방법으로 `www.oninsightlab.com`도 추가 (www로 들어와도 열리게)
+4. HTTPS 인증서는 자동 발급. 상태가 **Active**가 되면 완료
+
+> 주의: 끌어다 놓기로 만든 프로젝트는 나중에 GitHub 자동 배포로 바꿀 수 없습니다(새 프로젝트를 만들어야 함).
+> 파일 하나당 25MB, 전체 1,000개까지 올릴 수 있습니다.
+
 
 ### A. Netlify Drop — 가장 빠름 (5분, 무료)
 
@@ -91,7 +179,7 @@ var CONTACT = {
 
 ---
 
-## 5. 도메인 연결
+## 6. 도메인 연결
 
 도메인이 아직 없다면 가비아·후이즈·Cloudflare 등에서 구입할 수 있습니다 (`.kr` 기준 연 1~2만 원대).
 구입 후 호스팅 업체가 안내하는 네임서버나 A/CNAME 레코드를 등록하면 연결됩니다.
@@ -101,7 +189,12 @@ Netlify와 Vercel은 HTTPS 인증서를 자동으로 발급합니다.
 
 ## 참고
 
+- **2026-11-05 디자인 개편 반영**: 메인 비주얼(원 클릭 이동), 사업 영역, 아이콘 상단 메뉴(누르면 하위 메뉴 줄), 첫 화면은 메인만 보이는 페이지 보기, 퀵메뉴(사업영역·자료실·문의·밝기·홈·위·아래). 내부용 페이지와 같은 디자인이며, 사업 영역 문구는 내부용에서 수정한 내용 기준입니다. 문구를 바꾸려면 index.html 안의 `AREAS`(기본 문구) 또는 `var saved =` 줄을 고치세요.
+- **상단 메뉴**: 반투명 유리(글래스) 효과로, 스크롤하면 뒤 내용이 비쳐 보입니다. 구형 브라우저에서는 자동으로 불투명 배경으로 바뀝니다.
+- **퀵메뉴**: 화면 오른쪽에 고정된 빠른 메뉴입니다. 화면 폭 1180px 이하(노트북 작은 화면·태블릿)에서는 자동으로 숨겨집니다.
+- **하단 내비게이션 바**: 화면 폭 900px 이하에서 나타나는 스마트폰용 메뉴입니다. 홈·회사소개·비전·자료실·문의하기 5개로, 현재 보고 있는 섹션이 파란색으로 표시됩니다.
+- **푸터 사이트맵**: 주요 메뉴가 하위 항목까지 한 번 더 정리되어 있습니다. 메뉴를 늘리거나 줄이려면 `index.html` 아래쪽 `<footer>` 안의 `<li>` 항목을 수정하세요.
 - **다크 모드**: 방문자 기기 설정을 따라가고, 푸터 오른쪽 `THEME` 버튼으로 직접 전환할 수 있습니다.
 - **모바일**: 별도 작업 없이 화면 폭에 맞춰 조정됩니다.
-- **검색·SNS 공유**: 제목, 설명, 공유 썸네일(`files/og-image.png`)이 들어 있습니다. 도메인이 정해지면 `index.html` 상단 `og:image` 주소를 전체 주소(`https://도메인/files/og-image.png`)로 바꿔주면 카카오톡·페이스북 미리보기가 더 안정적으로 뜹니다.
+- **검색·SNS 공유**: 제목, 설명, 공유 썸네일이 들어 있습니다. 도메인 `oninsightlab.com` 기준으로 `og:url`, `og:image`(https://oninsightlab.com/files/og-image.png), `canonical` 주소를 설정해 두었습니다(2026-11-05). 도메인이 바뀌면 이 세 줄을 함께 고치세요.
 - **브랜드 규정**: 로고 최소 보호 구역 3a, 디지털 최소 크기 심볼 24px / 조합형 40px, 전용 색상 `#008CD6` `#001333` `#0D0D0D` — CI 가이드 기준을 그대로 적용했습니다.
