@@ -110,6 +110,19 @@ formHeight: 1200
 
 > 성함과 휴대폰 번호만으로 확인하는 방식이라, 두 정보를 아는 사람은 그 문의를 볼 수 있습니다. 민감한 내용은 문의 본문에 적지 않도록 안내하세요.
 
+## 3-2. 문의 기능 운영 자원 (2026-11-05 기준) — ⛔ 지우지 말 것
+
+| 무엇 | 위치 |
+|---|---|
+| 문의 폼 (홈페이지가 문의를 보내는 폼) | https://docs.google.com/forms/d/1gvE8OLclEnGy3Pz9LQGCSi64zn0xP-NIR2__xOqaH5o/edit |
+| 응답 시트 (탭: 설문지 응답 시트1) | https://docs.google.com/spreadsheets/d/1_0TJE8A2tHKO-F4lyKTwofcknSJZEbbL_5R-9XgIsZE/edit |
+| Apps Script (알림·내 문의 웹앱·답변 발송) | script.google.com — 전체 코드: `05_소스파일/oninsightlab_문의_전체.gs` |
+| 내 문의 웹앱 주소 | `index.html`의 `CONTACT.lookupUrl` |
+
+- 시트의 **열 이름**(성함, 회신 휴대폰, 답변, 답변등록, 답변일시, 수정일시 등)은 바꾸지 마세요. 열 위치를 옮기는 것은 괜찮습니다.
+- 같은 이름의 폼·시트가 또 생기면 Apps Script `listForms`로 ★(홈페이지용)을 확인하세요.
+- 조회가 안 될 때: `checkSheet` → `debugLookup` 순서로 실행해 로그 확인.
+
 ## 4. FAQ 수정하기
 
 `index.html`에서 `자주 묻는 질문` 부분의 `<details>` 블록을 찾아 문구를 고치면 됩니다.
