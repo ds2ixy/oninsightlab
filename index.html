@@ -16,6 +16,23 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ko_KR">
 <link rel="canonical" href="https://oninsightlab.com/">
+<!-- ── Google Analytics (GA4) ──────────────────────────────────────
+     측정 ID(G-로 시작)를 아래 따옴표 안에 넣으면 방문자 통계가 수집됩니다.
+     비워 두면 아무것도 불러오지 않습니다. -->
+<script>
+(function(){
+  var GA_ID = "";   // 예: "G-ABC1234567"
+  if(!GA_ID || location.protocol === "file:") return;
+  var s = document.createElement("script");
+  s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag("js", new Date());
+  gtag("config", GA_ID);
+  /* 메뉴로 페이지를 바꿀 때의 '페이지 조회'는 아래 페이지 전환 스크립트가 기록합니다 */
+})();
+</script>
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="files/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="files/favicon.png">
@@ -1413,6 +1430,7 @@ var RESOURCES = [
     if(t) requestAnimationFrame(function(){ t.scrollIntoView({behavior:(smooth&&!reduce)?'smooth':'auto',block:'start'}); });
     else window.scrollTo(0,0);
     try{ history.replaceState(null,'', pg==='home' && !t ? location.pathname+location.search : '#'+id); }catch(e){}
+    if(smooth && window.gtag) window.gtag('event','page_view',{page_location:location.href, page_title:document.title+' · '+pg});
     return true;
   }
 
