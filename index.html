@@ -494,6 +494,27 @@ nav.main{margin-left:0;flex:1 1 auto;justify-content:space-around;flex-wrap:nowr
 @media(max-width:380px){.foot-in{grid-template-columns:1fr}}
 @media(min-width:1001px){main .wrap, footer .wrap{max-width:min(var(--maxw), calc(100% - 2 * 80px))}}
 @media(min-width:1340px){main .wrap, footer .wrap{max-width:min(var(--maxw), calc(100% - 2 * 118px))}}
+
+/* ===== 박스형 문의 양식 ===== */
+input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;color:var(--text);background:var(--surface-3);border:1px solid var(--line);border-radius:8px;padding:9px 12px;width:100%}
+#qa-form{border-bottom:0}
+#qa-form .req{color:#C2410C;font-weight:600}
+#qa-form .invalid{border-color:#C2410C;box-shadow:0 0 0 3px rgba(194,65,12,.12)}
+.qa-consent{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--text-2)}
+.qa-consent .qc-head{margin:0 0 8px;font-weight:600;color:var(--text)}
+.qa-consent ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.qa-consent li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px}
+.qa-consent li span{color:var(--muted)}
+.qa-consent .qc-note{margin:8px 0 10px;color:var(--muted);font-size:12.5px}
+.qa-consent .qc-check{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--text);cursor:pointer}
+.qa-consent .qc-check input{width:16px;height:16px;accent-color:var(--accent-fill)}
+.qa-actions{flex-direction:row!important;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.qa-msg{margin:0;font-size:13px;color:var(--muted);min-height:1.4em}
+.qa-msg.err{color:#C2410C}
+.qa-done{display:grid;justify-items:center;gap:8px;text-align:center;padding:44px 20px;background:var(--surface-3)}
+.qa-done b{font-size:17px;color:var(--text)}
+.qa-done span{color:var(--muted);font-size:14px}
+.qa-done .btn{margin-top:6px}
 </style>
 </head>
 <body>
@@ -788,6 +809,36 @@ nav.main{margin-left:0;flex:1 1 auto;justify-content:space-around;flex-wrap:nowr
         <div class="spacer"></div>
         <a class="btn btn-sm" id="form-newtab" href="#" target="_blank" rel="noopener" hidden>새 창에서 열기</a>
       </div>
+      <form id="qa-form" class="form-grid" hidden novalidate>
+        <div class="field full"><label for="qa-cat">문의 유형 <b class="req">*</b></label>
+          <select id="qa-cat" required><option>사업 제휴</option><option>행사·포럼</option><option>컨설팅</option><option>교육·연수</option><option>기타</option></select>
+        </div>
+        <div class="field"><label for="qa-name">성함 <b class="req">*</b></label><input type="text" id="qa-name" required autocomplete="name" placeholder="홍길동"></div>
+        <div class="field"><label for="qa-org">기관·소속</label><input type="text" id="qa-org" autocomplete="organization" placeholder="기관명 (선택)"></div>
+        <div class="field"><label for="qa-phone">회신 연락처 · 휴대폰 <b class="req">*</b></label><input type="tel" id="qa-phone" required inputmode="numeric" autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></div>
+        <div class="field"><label for="qa-email">회신 연락처 · 이메일 <b class="req">*</b></label><input type="email" id="qa-email" required autocomplete="email" placeholder="name@example.com"></div>
+        <div class="field full"><label for="qa-title">제목 <b class="req">*</b></label><input type="text" id="qa-title" required placeholder="문의 제목"></div>
+        <div class="field full"><label for="qa-body">내용 <b class="req">*</b></label><textarea id="qa-body" required placeholder="문의 내용을 입력해 주세요."></textarea></div>
+        <div class="full qa-consent">
+          <p class="qc-head">개인정보 수집·이용 안내</p>
+          <ul>
+            <li><span>수집 항목</span>성함, 기관·소속, 휴대폰, 이메일</li>
+            <li><span>이용 목적</span>문의 확인 및 회신</li>
+            <li><span>보유 기간</span>문의 처리 완료 후 1년 (이후 파기)</li>
+          </ul>
+          <p class="qc-note">동의를 거부할 수 있으나, 이 경우 문의 접수가 어렵습니다.</p>
+          <label class="qc-check"><input type="checkbox" id="qa-agree" required> 위 내용에 동의합니다 <b class="req">*</b></label>
+        </div>
+        <div class="field full qa-actions">
+          <p id="qa-msg" class="qa-msg" role="status" aria-live="polite"></p>
+          <button type="submit" id="qa-submit" class="btn btn-primary">문의 등록</button>
+        </div>
+      </form>
+      <div id="qa-done" class="qa-done" hidden>
+        <b>문의가 접수되었습니다</b>
+        <span>담당자가 확인한 뒤 남겨 주신 연락처로 회신드리겠습니다.</span>
+        <button type="button" id="qa-again" class="btn btn-sm">다른 문의 남기기</button>
+      </div>
       <div id="form-embed"></div>
     </div>
 
@@ -1002,7 +1053,20 @@ var CONTACT = {
   // 구글폼 주소. 구글폼 → 보내기 → < > 탭에 나오는 주소를 붙여넣으세요.
   // (https://docs.google.com/forms/d/e/.../viewform?embedded=true 형태)
   formUrl:    "https://docs.google.com/forms/d/e/1FAIpQLSdB5IJ6tTozZzSnC9ul-ViphGQI0Cvolp8AN02Ia5zdYtuhog/viewform?embedded=true",
-  formHeight: 1900              // 문의 양식 높이(px). 잘려 보이면 숫자를 키우세요.
+  formHeight: 1900,             // (구글폼을 그대로 넣을 때만 사용) 양식 높이(px)
+
+  // 홈페이지 디자인 양식 → 구글폼으로 전송할 때 쓰는 문항 번호(entry ID).
+  // 모두 채워지면 박스형 양식이, 하나라도 비면 구글폼 화면이 그대로 표시됩니다.
+  formFields: {
+    type:  "",   // 문의 유형
+    name:  "",   // 성함
+    org:   "",   // 기관·소속
+    phone: "",   // 회신 휴대폰
+    email: "",   // 회신 이메일
+    title: "",   // 제목
+    body:  "",   // 문의 내용
+    agree: ""    // 개인정보 수집·이용 동의
+  }
 };
 
 /* ── 2. 자료실 목록 ───────────────────────────────────────────────────
@@ -1101,7 +1165,11 @@ var RESOURCES = [
 
   /* ---------- 온라인 문의 양식 (구글폼) ---------- */
   var box = document.getElementById('form-embed');
-  if(box){
+  var FF = CONTACT.formFields || {};
+  var nativeReady = CONTACT.formUrl && ['type','name','org','phone','email','title','body','agree'].every(function(k){ return /^entry\.\d+$/.test(FF[k]||''); });
+  if(box && nativeReady){
+    setupNativeForm();
+  } else if(box){
     if(CONTACT.formUrl){
       var url = CONTACT.formUrl;
       if(url.indexOf('embedded=true') < 0) url += (url.indexOf('?') < 0 ? '?' : '&') + 'embedded=true';
@@ -1119,6 +1187,53 @@ var RESOURCES = [
       var panel = document.getElementById('form-panel'); if(panel) panel.hidden = true;
       var h = document.getElementById('inquiry'); if(h) h.hidden = true;
     }
+  }
+
+  function setupNativeForm(){
+    var form=document.getElementById('qa-form'), done=document.getElementById('qa-done'), msg=document.getElementById('qa-msg');
+    var action=CONTACT.formUrl.split('?')[0].replace(/\/viewform$/,'/formResponse');
+    form.hidden=false;
+    var $=function(id){ return document.getElementById(id); };
+    var ph=$('qa-phone');
+    ph.addEventListener('input', function(){
+      var d=ph.value.replace(/\D/g,'').slice(0,11);
+      ph.value = d.length<4 ? d : d.length<8 ? d.slice(0,3)+'-'+d.slice(3) : d.slice(0,3)+'-'+d.slice(3,d.length-4)+'-'+d.slice(-4);
+    });
+    function say(t, err){ msg.textContent=t||''; msg.className='qa-msg'+(err?' err':''); }
+    form.addEventListener('input', function(e){ if(e.target.classList) e.target.classList.remove('invalid'); });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var bad=null;
+      [['qa-name'],['qa-phone',/^01[016789]-?\d{3,4}-?\d{4}$/],['qa-email',/^[^\s@]+@[^\s@]+\.[^\s@]+$/],['qa-title'],['qa-body']].forEach(function(r){
+        var n=$(r[0]), v=n.value.trim(), ok=!!v && (!r[1] || r[1].test(v));
+        n.classList.toggle('invalid', !ok); if(!ok && !bad) bad=n;
+      });
+      if(bad){ say(bad.id==='qa-phone' ? '휴대폰 번호를 010-0000-0000 형식으로 입력해 주세요.' : bad.id==='qa-email' ? '이메일 주소를 확인해 주세요.' : '필수 항목(*)을 모두 입력해 주세요.', true); bad.focus(); return; }
+      if(!$('qa-agree').checked){ say('개인정보 수집·이용에 동의해 주세요.', true); $('qa-agree').focus(); return; }
+      var data=new URLSearchParams();
+      data.append(FF.type,  $('qa-cat').value);
+      data.append(FF.name,  $('qa-name').value.trim());
+      data.append(FF.org,   $('qa-org').value.trim());
+      data.append(FF.phone, $('qa-phone').value.trim());
+      data.append(FF.email, $('qa-email').value.trim());
+      data.append(FF.title, $('qa-title').value.trim());
+      data.append(FF.body,  $('qa-body').value.trim());
+      data.append(FF.agree, '위 내용에 동의합니다');
+      var btn=$('qa-submit'); btn.disabled=true; say('보내는 중…');
+      fetch(action, {method:'POST', mode:'no-cors', body:data}).then(function(){
+        form.reset(); form.hidden=true; done.hidden=false; say('');
+        if(window.gtag) window.gtag('event','generate_lead',{form:'inquiry'});
+      })['catch'](function(){
+        say('전송하지 못했습니다. 잠시 후 다시 시도하시거나 아래 이메일로 문의해 주세요.', true);
+      }).then(function(){ btn.disabled=false; });
+    });
+    $('qa-again').addEventListener('click', function(){ done.hidden=true; form.hidden=false; $('qa-cat').focus(); });
+    /* 메뉴의 '○○ 문의'를 누르면 문의 유형 미리 선택 */
+    document.addEventListener('click', function(e){
+      var a=e.target.closest && e.target.closest('a[data-qcat]'); if(!a) return;
+      $('qa-cat').value=a.getAttribute('data-qcat');
+      if(!done.hidden){ done.hidden=true; form.hidden=false; }
+    });
   }
 
   /* ---------- 문의 버튼 ---------- */
