@@ -573,6 +573,12 @@ input[type=tel],input[type=email]{font-family:var(--font-kr);font-size:14px;colo
 @media(max-width:640px){.qd-form{grid-template-columns:1fr 1fr}.qd-form input{grid-column:1/-1}}
 .qd-card{padding:0;border:0}
 .qd-card .my-acts{margin-top:4px}
+
+/* ===== 푸터 연락처 한 줄 ===== */
+@media(min-width:1001px){
+  .foot-in{grid-template-columns:1.1fr repeat(3,.6fr) 2.1fr;gap:28px}
+  #foot-contact .fv{white-space:nowrap}
+}
 </style>
 </head>
 <body>
@@ -1141,13 +1147,15 @@ var CONTACT = {
 /* ── 2. 자료실 목록 ───────────────────────────────────────────────────
    자료를 추가하려면 ① files 폴더에 파일을 올리고
    ② 아래 목록에 { } 한 덩어리를 복사해 붙여넣은 뒤 내용을 고치세요.
-   category 는 연구보고서 / 브랜드·CI / 발간자료 / 사업안내 / 기타 중 하나. */
+   category 는 연구보고서 / 브랜드·CI / 발간자료 / 사업안내 / 기타 중 하나.
+   ebook 은 웹 이북 주소(있으면 '이북으로 보기' 버튼 표시, 없으면 빼도 됨). */
 var RESOURCES = [
   {
     title:    "On Insight Lab 브랜드 비전 체계",
     category: "브랜드·CI",
     desc:     "미션·비전·슬로건 3티어 체계, 핵심가치 O-N-I, 4대 전략 방향",
     file:     "files/On_Insight_Lab_브랜드_비전체계.pdf",
+    ebook:    "ebook/brand-vision.html",
     date:     "2026-09-18"
   },
   {
@@ -1205,11 +1213,16 @@ var RESOURCES = [
       li.appendChild(mid);
 
       var acts=el('div','acts');
+      if(r.ebook){
+        var eb=el('a','btn btn-sm btn-primary','이북으로 보기');
+        eb.href=r.ebook; eb.target='_blank'; eb.rel='noopener';
+        acts.appendChild(eb);
+      }
       if(r.file){
         var open=el('a','btn btn-sm','열기');
         open.href=r.file; open.target='_blank'; open.rel='noopener';
         acts.appendChild(open);
-        var dl=el('a','btn btn-sm btn-primary','다운로드');
+        var dl=el('a', r.ebook ? 'btn btn-sm' : 'btn btn-sm btn-primary','다운로드');
         dl.href=r.file; dl.setAttribute('download','');
         acts.appendChild(dl);
       } else {
